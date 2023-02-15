@@ -9,3 +9,11 @@ spring:
     username: guest
     password: guest
     virtual-host: /
+
+app:
+  read-only: false
+  rabbit:
+    addresses: localhost:5672
+    username: guest
+    password: guest
+    virtual-host: /

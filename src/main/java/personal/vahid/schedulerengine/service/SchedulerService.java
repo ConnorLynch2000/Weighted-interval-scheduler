@@ -11,9 +11,6 @@ import personal.vahid.schedulerengine.model.RealWorldJob;
 import personal.vahid.schedulerengine.model.SymbolicJob;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

@@ -1,12 +1,30 @@
 package personal.vahid.schedulerengine.model;
 
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
 @Builder
-public record RealWorldJob(LocalDateTime start,
-                           LocalDateTime end,
-                           long profit) {}
+@AllArgsConstructor
+public class RealWorldJob implements Job<LocalDateTime>{
+    LocalDateTime start;
+    LocalDateTime end;
+    long profit;
+
+    @Override
+    public LocalDateTime getEnd() {
+        return this.end;
+    }
+
+    @Override
+    public LocalDateTime getStart() {
+        return this.start;
+    }
+
+    @Override
+    public long getProfit(){
+        return this.profit;
+    }
+
+}

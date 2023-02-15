@@ -1,8 +1,27 @@
 package personal.vahid.schedulerengine.model;
 
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.experimental.FieldDefaults;
 
 @Builder
-public record SymbolicJob(int start, int end, int profit) {}
+@AllArgsConstructor
+public class SymbolicJob implements Job<Integer>{
+    int start;
+    int end;
+    long profit;
+
+    @Override
+    public Integer getEnd() {
+        return this.end;
+    }
+
+    @Override
+    public Integer getStart() {
+        return this.start;
+    }
+
+    @Override
+    public long getProfit(){
+        return this.profit;
+    }
+}

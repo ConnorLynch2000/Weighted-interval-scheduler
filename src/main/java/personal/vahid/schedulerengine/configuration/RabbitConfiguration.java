@@ -22,7 +22,7 @@ import personal.vahid.schedulerengine.model.config.RabbitConfig;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RabbitConfiguration {
 
-    public static final String SCHEDULER_API_EXCHANGE = "scheduler-api-exchange";
+    public static final String SCHEDULER_API_EXCHANGE = "scheduler-api";
     public static final String SCHEDULER_API_QUEUE = "scheduler-api-queue";
 
     @Primary
@@ -49,7 +49,7 @@ public class RabbitConfiguration {
 
     @Bean
     public FanoutExchange fanoutExchange(){
-        return new FanoutExchange(SCHEDULER_API_EXCHANGE);
+        return new FanoutExchange(SCHEDULER_API_EXCHANGE, true, false);
     }
 
     @Bean

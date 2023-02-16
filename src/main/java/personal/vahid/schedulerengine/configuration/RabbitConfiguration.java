@@ -4,13 +4,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -23,7 +21,8 @@ import personal.vahid.schedulerengine.model.config.RabbitConfig;
 public class RabbitConfiguration {
 
     public static final String SCHEDULER_API_EXCHANGE = "scheduler-api";
-    public static final String SCHEDULER_API_QUEUE = "scheduler-api-queue";
+    public static final String SYM_SCHEDULER_API_QUEUE = "sym-scheduler-api-queue";
+    public static final String RW_SCHEDULER_API_QUEUE = "rw-scheduler-api-queue";
 
     @Primary
     @Bean
@@ -48,17 +47,28 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    public FanoutExchange fanoutExchange(){
-        return new FanoutExchange(SCHEDULER_API_EXCHANGE, true, false);
+    public DirectExchange directExchange(){
+        return new DirectExchange(SCHEDULER_API_EXCHANGE, true, false);
     }
 
-    @Bean
-    public Queue queue(){
-        return new Queue(SCHEDULER_API_QUEUE, true);
+    @Bean("symbolic-queue")
+    public Queue symQueue(){
+        return new Queue(SYM_SCHEDULER_API_QUEUE, true);
     }
 
-    @Bean
-    public Binding binding(FanoutExchange exchange, Queue queue){
-        return BindingBuilder.bind(queue).to(exchange);
+    @Bean("real-world-queue")
+    public Queue rwQueue(){
+        return new Queue(RW_SCHEDULER_API_QUEUE, true);
+    }
+
+    @Bean("symbolic-binding")
+    public Binding symBinding(DirectExchange exchange, @Qualifier("symbolic-queue") Queue queue){
+        return BindingBuilder.bind(queue).to(exchange).with("sym");
+    }
+
+
+    @Bean("real-world-binding")
+    public Binding rwBinding(DirectExchange exchange, @Qualifier("real-world-queue") Queue queue){
+        return BindingBuilder.bind(queue).to(exchange).with("rw");
     }
 }
